@@ -15,7 +15,7 @@
     "predeploy": "yarn build",
     "deploy": "gh-pages -d build"
   },
-  "homepage": "https://herdanuyp.github.io/basic-react-demo/",
+  "homepage": "https://herdanuyp.github.io/basic-react-demo",
   "eslintConfig": {
     "extends": "react-app"
   },
