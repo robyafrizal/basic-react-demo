@@ -98,17 +98,16 @@ class Todo extends Component {
             {this.state.todos.map((data, index) => (
               <React.Fragment key={index}>
                 {this.state.todos[index].isEdit ? (
-                  <>
+                  <React.Fragment>
                     <input
                       type='text'
-                      name='todo'
                       value={data.todo}
                       onChange={event => this.handleChange(event, index)}
                     />
                     <span onClick={() => this.updateTodo(index)}>
                       update todo
                     </span>
-                  </>
+                  </React.Fragment>
                 ) : (
                   <li>
                     {data.todo}
