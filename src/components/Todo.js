@@ -107,6 +107,7 @@ class Todo extends Component {
                     <span onClick={() => this.updateTodo(index)}>
                       update todo
                     </span>
+                    <span onClick={() => this.updateTodo(index)}>Cancel</span>
                   </React.Fragment>
                 ) : (
                   <li>
