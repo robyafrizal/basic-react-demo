@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Message } from 'semantic-ui-react';
 
+import DeleteTodo from './modalDelete';
+
 class Todo extends Component {
   constructor(props) {
     super(props);
@@ -112,7 +114,7 @@ class Todo extends Component {
                 ) : (
                   <li>
                     {data.todo}
-                    <span onClick={() => this.deleteTodo(data.id)}>x</span>
+                    <DeleteTodo deleteTodo={() => this.deleteTodo(data.id)} />
                     <span onClick={() => this.editTodo(index)}>edit</span>
                   </li>
                 )}
