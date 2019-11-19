@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Link, Switch, Route } from 'react-router-dom';
+import { Link, Switch, Route } from 'react-router-dom';
 import { Container, Dropdown, Image, Menu } from 'semantic-ui-react';
 import { withRouter } from 'react-router';
 
@@ -7,14 +7,15 @@ import PrivateRoute from './components/PrivateRoute';
 import Todo from './components/Todo';
 import Game from './components/Game';
 import LoginPage from './components/Login';
-import AuthButton from './components/AuthButton';
+// import AuthButton from './components/AuthButton';
 import Logo from './assets/images/smile.png';
 import { fakeAuth } from './components/helpers/fakeAuth';
+import DesktopContainer from './components/Home';
 
 function App(props) {
   return (
     <React.Fragment>
-      <Menu fixed='top' inverted>
+      {/* <Menu fixed='top' inverted>
         <Container>
           <Menu.Item header>
             <Image size='mini' src={Logo} style={{ marginRight: '1.5em' }} />
@@ -48,13 +49,11 @@ function App(props) {
             </Menu.Item>
           )}
         </Container>
-      </Menu>
-
-      <hr />
+      </Menu> */}
 
       <Switch>
         <Route exact path='/'>
-          Ini Home
+          <DesktopContainer />
         </Route>
 
         <Route path='/login'>

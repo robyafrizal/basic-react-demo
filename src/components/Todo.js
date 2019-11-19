@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Checkbox, Message } from 'semantic-ui-react';
+import { Message } from 'semantic-ui-react';
 
 class Todo extends Component {
   constructor(props) {
@@ -30,21 +30,58 @@ class Todo extends Component {
     todosObj['id'] = this.state.todos.length + 1;
     todosObj['todo'] = this.state.inputValue;
     todosObj['status'] = false;
+    todosObj['isEdit'] = false;
 
     todos.push(todosObj);
 
     this.setState({ todos, inputValue: '', error: '' });
   };
 
+  deleteTodo = idTodo => {
+    const todos = [...this.state.todos];
+    // ======== cara pertama pakai splice =============
+    // const findTodoIndex = todos.findIndex(element => element.id === idTodo);
+    // todos.splice(findTodoIndex, 1);
+
+    // ======== cara kedua pakai filter =============
+    const filteredTodo = todos.filter(element => element.id !== idTodo);
+
+    this.setState({
+      todos: filteredTodo
+    });
+  };
+
+  editTodo = index => {
+    const todos = [...this.state.todos];
+    todos[index].isEdit = true;
+    this.setState({
+      todos
+    });
+  };
+
+  handleChange = (event, index) => {
+    const todos = [...this.state.todos];
+    todos[index].todo = event.target.value;
+
+    this.setState({
+      todos
+    });
+  };
+
+  updateTodo = index => {
+    const todos = [...this.state.todos];
+    todos[index].isEdit = false;
+    this.setState({
+      todos
+    });
+  };
+
   render() {
     return (
-      <div>
+      <div style={{ paddingTop: 40 }}>
         {this.state.error && (
           <Message color='black'>
-            <Message.Header>
-              We're sorry we can't apply that discount
-            </Message.Header>
-            <p>That offer has expired</p>
+            <Message.Header>Input tidak boleh kosong</Message.Header>
           </Message>
         )}
         <form onSubmit={this.handleTodoButton}>
@@ -59,7 +96,27 @@ class Todo extends Component {
         <div>
           <ul>
             {this.state.todos.map((data, index) => (
-              <Checkbox key={index} label={data.todo} />
+              <React.Fragment key={index}>
+                {this.state.todos[index].isEdit ? (
+                  <>
+                    <input
+                      type='text'
+                      name='todo'
+                      value={data.todo}
+                      onChange={event => this.handleChange(event, index)}
+                    />
+                    <span onClick={() => this.updateTodo(index)}>
+                      update todo
+                    </span>
+                  </>
+                ) : (
+                  <li>
+                    {data.todo}
+                    <span onClick={() => this.deleteTodo(data.id)}>x</span>
+                    <span onClick={() => this.editTodo(index)}>edit</span>
+                  </li>
+                )}
+              </React.Fragment>
             ))}
           </ul>
         </div>
