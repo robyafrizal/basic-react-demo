@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import { Message } from 'semantic-ui-react';
+import axios from 'axios';
 
 import DeleteTodo from './modalDelete';
+
+const URI = `http://localhost:3069`;
 
 class Todo extends Component {
   constructor(props) {
@@ -9,8 +12,26 @@ class Todo extends Component {
     this.state = {
       todos: [],
       inputValue: '',
-      error: ''
+      error: '',
+      isLoaded: false
     };
+  }
+
+  componentDidMount() {
+    axios
+      .get(URI)
+      .then(result =>
+        this.setState({
+          todos: result.data,
+          isLoaded: true
+        })
+      )
+      .catch(error => {
+        this.setState({
+          error: error.message,
+          isLoaded: true
+        });
+      });
   }
 
   handleTodoInput = event => {
@@ -19,9 +40,9 @@ class Todo extends Component {
     });
   };
 
-  handleTodoButton = event => {
+  addTodoButton = event => {
     event.preventDefault();
-    const todos = this.state.todos.slice(); //copy original state
+    // const todos = this.state.todos.slice(); //copy original state
 
     if (this.state.inputValue === '') {
       this.setState({ error: 'input tidak boleh kosong' });
@@ -34,23 +55,45 @@ class Todo extends Component {
     todosObj['status'] = false;
     todosObj['isEdit'] = false;
 
-    todos.push(todosObj);
+    axios
+      .post(URI, todosObj)
+      .then(result => {
+        this.setState({ todos: result.data.todos, inputValue: '', error: '' });
+      })
+      .catch(error => {
+        this.setState({
+          error: error.message
+        });
+      });
 
-    this.setState({ todos, inputValue: '', error: '' });
+    // todos.push(todosObj);
+
+    // this.setState({ todos, inputValue: '', error: '' });
   };
 
   deleteTodo = idTodo => {
-    const todos = [...this.state.todos];
+    // const todos = [...this.state.todos];
     // ======== cara pertama pakai splice =============
     // const findTodoIndex = todos.findIndex(element => element.id === idTodo);
     // todos.splice(findTodoIndex, 1);
 
     // ======== cara kedua pakai filter =============
-    const filteredTodo = todos.filter(element => element.id !== idTodo);
+    // const filteredTodo = todos.filter(element => element.id !== idTodo);
 
-    this.setState({
-      todos: filteredTodo
-    });
+    // this.setState({
+    //   todos: filteredTodo
+    // });
+
+    axios
+      .delete(`${URI}/${idTodo}`)
+      .then(result => {
+        this.setState({ todos: result.data });
+      })
+      .catch(error => {
+        this.setState({
+          error: error.message
+        });
+      });
   };
 
   editTodo = index => {
@@ -66,27 +109,50 @@ class Todo extends Component {
     todos[index].todo = event.target.value;
 
     this.setState({
-      todos
+      todos,
+      error: ''
     });
   };
 
-  updateTodo = index => {
+  updateTodo = (index, id) => {
     const todos = [...this.state.todos];
     todos[index].isEdit = false;
-    this.setState({
-      todos
-    });
+    // this.setState({
+    //   todos
+    // });
+
+    axios
+      .put(`${URI}/${id}`, {
+        todo: todos[index].todo,
+        status: 1
+      })
+      .then(result => {
+        this.setState({
+          todos: result.data.todos
+        });
+      })
+      .catch(error => {
+        this.setState({
+          error: error.message
+        });
+      });
   };
 
   render() {
+    const { isLoaded, error } = this.state;
+
+    if (!isLoaded) {
+      return <div>Loading...</div>;
+    }
+
     return (
       <div style={{ paddingTop: 40 }}>
-        {this.state.error && (
+        {error && (
           <Message color='black'>
             <Message.Header>Input tidak boleh kosong</Message.Header>
           </Message>
         )}
-        <form onSubmit={this.handleTodoButton}>
+        <form onSubmit={this.addTodoButton}>
           <input
             type='text'
             name='inputValue'
@@ -106,7 +172,7 @@ class Todo extends Component {
                       value={data.todo}
                       onChange={event => this.handleChange(event, index)}
                     />
-                    <span onClick={() => this.updateTodo(index)}>
+                    <span onClick={() => this.updateTodo(index, data.id)}>
                       update todo
                     </span>
                     <span onClick={() => this.updateTodo(index)}>Cancel</span>
