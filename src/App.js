@@ -1,32 +1,19 @@
 import React from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
-import RestApi from './components/RestApi';
-import PostDetail from './components/PostDetail';
-import AddNewPost from './components/AddNewPost';
-import Todo from './components/Todo';
+import { MovieProvider } from './components/MovieContext';
+import MovieList from './components/MovieList';
+import Nav from './components/Nav';
+import AddNewMovieForm from './components/AddNewMovieForm';
 
 function App() {
   return (
-    <BrowserRouter>
-      <Switch>
-        <Route exact path='/rest-api'>
-          <RestApi />
-        </Route>
-
-        <Route path='/post-detail/:id'>
-          <PostDetail />
-        </Route>
-
-        <Route path='/add-new-post'>
-          <AddNewPost />
-        </Route>
-
-        <Route path='/todo'>
-          <Todo />
-        </Route>
-      </Switch>
-    </BrowserRouter>
+    <MovieProvider>
+      <div>
+        <Nav />
+        <AddNewMovieForm />
+        <MovieList />
+      </div>
+    </MovieProvider>
   );
 }
 

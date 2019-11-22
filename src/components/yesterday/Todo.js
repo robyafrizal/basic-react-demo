@@ -4,7 +4,7 @@ import axios from 'axios';
 
 import DeleteTodo from './modalDelete';
 
-const URI = `http://localhost:3069`;
+const URI = process.env.REACT_APP_API_URI_TODO;
 
 class Todo extends Component {
   constructor(props) {
@@ -56,8 +56,10 @@ class Todo extends Component {
     todosObj['isEdit'] = false;
 
     axios
-      .post(URI, todosObj)
+      .post(URI, { todo: this.state.inputValue })
       .then(result => {
+        console.log(result);
+
         this.setState({ todos: result.data.todos, inputValue: '', error: '' });
       })
       .catch(error => {

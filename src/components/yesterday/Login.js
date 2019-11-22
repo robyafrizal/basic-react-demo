@@ -11,7 +11,7 @@ import {
 } from 'semantic-ui-react';
 
 import logo from '../assets/images/smile.png';
-import { fakeAuth } from './helpers/fakeAuth';
+import { fakeAuth } from '../helpers/fakeAuth';
 
 class LoginPage extends React.Component {
   constructor(props) {

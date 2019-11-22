@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
 
-import { fakeAuth } from './helpers/fakeAuth';
+import { fakeAuth } from '../helpers/fakeAuth';
 
 function PrivateRoute({ children, ...rest }) {
   return (

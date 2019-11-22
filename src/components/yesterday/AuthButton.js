@@ -1,7 +1,7 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 
-import { fakeAuth } from './helpers/fakeAuth';
+import { fakeAuth } from '../helpers/fakeAuth';
 
 function AuthButton() {
   let history = useHistory();
