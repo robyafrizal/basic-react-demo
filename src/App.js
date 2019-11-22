@@ -1,9 +1,9 @@
 import React from 'react';
 
-import { MovieProvider } from './components/MovieContext';
-import MovieList from './components/MovieList';
-import Nav from './components/Nav';
-import AddNewMovieForm from './components/AddNewMovieForm';
+import MovieProvider from './components/contextHooks/MovieContext';
+import MovieList from './components/contextHooks/MovieList';
+import Nav from './components/contextHooks/Nav';
+import AddNewMovieForm from './components/contextHooks/AddNewMovieForm';
 
 function App() {
   return (
